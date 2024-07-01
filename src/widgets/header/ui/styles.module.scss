@@ -1,0 +1,12 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 74px;
+	background-color: #aeaeae;
+
+	&__wrapperLink {
+		padding: 0px 10px;
+	}
+}
