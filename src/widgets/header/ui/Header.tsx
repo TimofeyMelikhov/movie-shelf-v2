@@ -1,11 +1,16 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
+import { removeUser } from '@/pages/auth/api/userSlice'
+
+import { useAppDispatch } from '@/shared/hooks/useAppDispatch'
+import { useAuth } from '@/shared/hooks/useAuth'
+
 import styles from './styles.module.scss'
 
-const isAuth = true
-
 export const Header = memo(() => {
+	const { isAuth } = useAuth()
+	const dispatch = useAppDispatch()
 	return (
 		<header>
 			{isAuth ? (
@@ -14,7 +19,7 @@ export const Header = memo(() => {
 						<Link to='/'>Кинополка</Link>
 					</div>
 					{/* <MovieSearch /> */}
-					<div>
+					<div onClick={() => dispatch(removeUser())}>
 						<Link to='/auth'>Выйти</Link>
 					</div>
 				</div>

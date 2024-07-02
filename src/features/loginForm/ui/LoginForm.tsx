@@ -15,7 +15,7 @@ import { setUser } from '@/pages/auth/api/userSlice'
 import { ErrorMessage } from '@/shared/errorMessage/ui/ErrorMessage'
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch'
 
-import { FormType, IForm } from '../model/model'
+import { ExtendedUser, FormType, IForm } from '../model/model'
 
 import styles from './styles.module.scss'
 
@@ -30,27 +30,45 @@ export const LoginForm = memo(() => {
 	const loginError = formState.errors.email?.message
 	const passwordError = formState.errors.password?.message
 
-	const onSubmit: SubmitHandler<IForm> = ({ email, password }) => {
+	const onSubmit: SubmitHandler<IForm> = async ({ email, password }) => {
 		const auth = getAuth()
 		if (formType === 'register') {
-			createUserWithEmailAndPassword(auth, email, password)
-				.then(({ user }) => {
-					// dispatch(
-					// 	setUser({
-					// 		email: user.email,
-					// 		id: user.uid,
-					// 		token: user.accessToken
-					// 	})
-					// )
-					navigate('/')
-				})
-				.catch(console.error)
+			try {
+				const { user } = await createUserWithEmailAndPassword(
+					auth,
+					email,
+					password
+				)
+				const extendedUser = user as ExtendedUser
+				dispatch(
+					setUser({
+						email: extendedUser.email,
+						id: extendedUser.uid,
+						token: extendedUser.accessToken
+					})
+				)
+			} catch (error) {
+				console.error(error)
+				alert('Ошибка регистрации')
+			}
 		} else {
-			signInWithEmailAndPassword(auth, email, password)
-				.then(console.log)
-				.catch(console.error)
+			try {
+				const { user } = await signInWithEmailAndPassword(auth, email, password)
+				const extendedUser = user as ExtendedUser
+				dispatch(
+					setUser({
+						email: extendedUser.email,
+						id: extendedUser.uid,
+						token: extendedUser.accessToken
+					})
+				)
+				alert('добро пожаловать')
+				navigate('/')
+			} catch (error) {
+				console.error(error)
+				alert('Ошибка авторизации')
+			}
 		}
-		// dispatch()
 	}
 
 	const [formType, setFormType] = useState<FormType>('login')
