@@ -3,12 +3,12 @@ import { Provider } from 'react-redux'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { PrivateRoute } from '@/pages/PrivateRoute/ui/PrivateRoute'
 import { AuthPage } from '@/pages/auth/ui/AuthPage'
 import { Page } from '@/pages/main/ui/Page'
 
-import { PrivateRoute } from '@/shared/PrivateRoute/ui/PrivateRoute'
-
 import { store } from './appStore'
+import './firebase'
 import { BaseLayout } from './layouts/BaseLayout'
 import './styles/index.scss'
 
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
 			{
 				path: '/',
 				element: (
-					<PrivateRoute isAuthenticated={isAuthenticated}>
+					<PrivateRoute>
 						<Page />
 					</PrivateRoute>
 				)

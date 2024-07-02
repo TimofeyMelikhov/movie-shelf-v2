@@ -1,0 +1,52 @@
+h1 {
+	text-align: center;
+	font-size: 22px;
+}
+.loginForm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 350px;
+	height: 350px;
+	border: 1px solid #aeaeae;
+	border-radius: 10px;
+	padding: 30px;
+	background-color: #aeaeae;
+
+	.inputWrapper {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		margin-top: 25px;
+	}
+	.iconWrapper {
+		position: absolute;
+		top: 50%;
+		left: 8px;
+		transform: translateY(-50%);
+	}
+
+	input {
+		width: 100%;
+		display: block;
+		padding: 6px 6px 6px 25px;
+		border-radius: 5px;
+		font-size: 16px;
+		border: 1px solid transparent;
+		transition: all 0.3s;
+		&:focus {
+			border-color: peru;
+		}
+	}
+	button {
+		width: 50%;
+		margin-top: 25px;
+		padding: 10px 25px;
+		cursor: pointer;
+		border-radius: 10px;
+	}
+	.formToggle {
+		cursor: pointer;
+		color: aqua;
+	}
+}

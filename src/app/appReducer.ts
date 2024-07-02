@@ -1,3 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
-export const rootReducer = combineReducers({})
+import userReducer from '@/pages/auth/api/userSlice'
+
+export const rootReducer = combineReducers({
+	userReducer
+})
