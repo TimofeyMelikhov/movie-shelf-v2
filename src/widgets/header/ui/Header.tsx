@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
-import { removeUser } from '@/pages/auth/api/userSlice'
+import { removeUser } from '@/features/loginForm/api/userSlice'
 
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch'
 import { useAuth } from '@/shared/hooks/useAuth'
@@ -9,8 +9,14 @@ import { useAuth } from '@/shared/hooks/useAuth'
 import styles from './styles.module.scss'
 
 export const Header = memo(() => {
-	const { isAuth } = useAuth()
+	const { isAuth, email } = useAuth()
 	const dispatch = useAppDispatch()
+
+	const logOut = () => {
+		localStorage.removeItem('userInfo')
+		dispatch(removeUser())
+	}
+
 	return (
 		<header>
 			{isAuth ? (
@@ -19,8 +25,11 @@ export const Header = memo(() => {
 						<Link to='/'>Кинополка</Link>
 					</div>
 					{/* <MovieSearch /> */}
-					<div onClick={() => dispatch(removeUser())}>
-						<Link to='/auth'>Выйти</Link>
+					<div>
+						{email}
+						<Link onClick={logOut} to='/auth'>
+							Выйти
+						</Link>
 					</div>
 				</div>
 			) : (

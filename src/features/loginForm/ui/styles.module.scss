@@ -2,51 +2,23 @@ h1 {
 	text-align: center;
 	font-size: 22px;
 }
-.loginForm {
+
+.formWrapper {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
-	width: 350px;
-	height: 350px;
-	border: 1px solid #aeaeae;
+	padding: 20px 30px;
+	border: 1px solid gray;
 	border-radius: 10px;
-	padding: 30px;
-	background-color: #aeaeae;
 
-	.inputWrapper {
-		display: flex;
-		flex-direction: column;
-		position: relative;
-		margin-top: 25px;
-	}
-	.iconWrapper {
-		position: absolute;
-		top: 50%;
-		left: 8px;
-		transform: translateY(-50%);
-	}
+	&__togle {
+		margin-top: 10px;
+		font-size: 10px;
 
-	input {
-		width: 100%;
-		display: block;
-		padding: 6px 6px 6px 25px;
-		border-radius: 5px;
-		font-size: 16px;
-		border: 1px solid transparent;
-		transition: all 0.3s;
-		&:focus {
-			border-color: peru;
+		&_btn {
+			color: blue;
+			cursor: pointer;
 		}
-	}
-	button {
-		width: 50%;
-		margin-top: 25px;
-		padding: 10px 25px;
-		cursor: pointer;
-		border-radius: 10px;
-	}
-	.formToggle {
-		cursor: pointer;
-		color: aqua;
 	}
 }

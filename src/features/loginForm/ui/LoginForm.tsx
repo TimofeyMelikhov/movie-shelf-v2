@@ -1,73 +1,36 @@
 import { memo, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { CiLogin } from 'react-icons/ci'
-import { RiLockPasswordLine } from 'react-icons/ri'
+import { SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-import {
-	createUserWithEmailAndPassword,
-	getAuth,
-	signInWithEmailAndPassword
-} from 'firebase/auth'
-
-import { setUser } from '@/pages/auth/api/userSlice'
-
-import { ErrorMessage } from '@/shared/errorMessage/ui/ErrorMessage'
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch'
+import { useAppSelector } from '@/shared/hooks/useAppSelector'
+import { ErrorMessage } from '@/shared/ui/errorMessage/ErrorMessage'
+import { Preloader } from '@/shared/ui/preloader/Preloader'
+import { UserForm } from '@/shared/ui/userForm/UserForm'
 
-import { ExtendedUser, FormType, IForm } from '../model/model'
+import { loginUser, registerUser } from '../api/authActions'
+import { setLoading } from '../api/userSlice'
+import { FormType, IForm } from '../model/model'
 
 import styles from './styles.module.scss'
 
 export const LoginForm = memo(() => {
 	const dispatch = useAppDispatch()
-
+	const { isLoading, error } = useAppSelector(state => state.userReducer)
 	const navigate = useNavigate()
 
-	const { register, handleSubmit, formState } = useForm<IForm>({
-		mode: 'onChange'
-	})
-	const loginError = formState.errors.email?.message
-	const passwordError = formState.errors.password?.message
-
 	const onSubmit: SubmitHandler<IForm> = async ({ email, password }) => {
-		const auth = getAuth()
-		if (formType === 'register') {
-			try {
-				const { user } = await createUserWithEmailAndPassword(
-					auth,
-					email,
-					password
-				)
-				const extendedUser = user as ExtendedUser
-				dispatch(
-					setUser({
-						email: extendedUser.email,
-						id: extendedUser.uid,
-						token: extendedUser.accessToken
-					})
-				)
-			} catch (error) {
-				console.error(error)
-				alert('Ошибка регистрации')
-			}
-		} else {
-			try {
-				const { user } = await signInWithEmailAndPassword(auth, email, password)
-				const extendedUser = user as ExtendedUser
-				dispatch(
-					setUser({
-						email: extendedUser.email,
-						id: extendedUser.uid,
-						token: extendedUser.accessToken
-					})
-				)
-				alert('добро пожаловать')
+		try {
+			dispatch(setLoading(true))
+			if (formType === 'register') {
+				await dispatch(registerUser({ email, password }))
+			} else {
+				await dispatch(loginUser({ email, password }))
 				navigate('/')
-			} catch (error) {
-				console.error(error)
-				alert('Ошибка авторизации')
 			}
+		} catch (error) {
+		} finally {
+			dispatch(setLoading(false))
 		}
 	}
 
@@ -80,81 +43,44 @@ export const LoginForm = memo(() => {
 	return (
 		<>
 			{formType === 'login' ? (
-				<form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
+				<div className={styles.formWrapper}>
 					<h1>Авторизация</h1>
-					<div className={styles.inputWrapper}>
-						<div className={styles.iconWrapper}>
-							<CiLogin />
-						</div>
-						<input
-							type='text'
-							placeholder='логин'
-							{...register('email', {
-								required: 'Логин не может быть пустым'
-							})}
+					<UserForm onSubmit={onSubmit} formType={formType} />
+					{error && (
+						<ErrorMessage
+							message={
+								error === 'auth/invalid-credential'
+									? 'Неверный логин или пароль'
+									: undefined
+							}
 						/>
+					)}
+					<div className={styles.formWrapper__togle}>
+						Нет аккаунта?{' '}
+						<span
+							className={styles.formWrapper__togle_btn}
+							onClick={() => formTypeHandler('register')}
+						>
+							Зарегистрируйтесь!
+						</span>
 					</div>
-					{loginError && <ErrorMessage message={loginError} />}
-
-					<div className={styles.inputWrapper}>
-						<div className={styles.iconWrapper}>
-							<RiLockPasswordLine />
-						</div>
-						<input
-							type='password'
-							placeholder='пароль'
-							{...register('password', {
-								required: 'Введите пароль'
-							})}
-						/>
-					</div>
-					{passwordError && <ErrorMessage message={passwordError} />}
-					<button>Войти</button>
-					<p
-						className={styles.formToggle}
-						onClick={() => formTypeHandler('register')}
-					>
-						Зарегистрироваться
-					</p>
-				</form>
+					{isLoading && <Preloader />}
+				</div>
 			) : (
-				<form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
+				<div className={styles.formWrapper}>
 					<h1>Регистрация</h1>
-					<div className={styles.inputWrapper}>
-						<div className={styles.iconWrapper}>
-							<CiLogin />
-						</div>
-						<input
-							type='text'
-							placeholder='логин'
-							{...register('email', {
-								required: 'Логин не может быть пустым'
-							})}
-						/>
+					<UserForm onSubmit={onSubmit} formType={formType} />
+					<div className={styles.formWrapper__togle}>
+						Уже есть аккаунт?{' '}
+						<span
+							className={styles.formWrapper__togle_btn}
+							onClick={() => formTypeHandler('login')}
+						>
+							Войти
+						</span>
 					</div>
-					{loginError && <ErrorMessage message={loginError} />}
-
-					<div className={styles.inputWrapper}>
-						<div className={styles.iconWrapper}>
-							<RiLockPasswordLine />
-						</div>
-						<input
-							type='password'
-							placeholder='пароль'
-							{...register('password', {
-								required: 'Введите пароль'
-							})}
-						/>
-					</div>
-					{passwordError && <ErrorMessage message={passwordError} />}
-					<button>Войти</button>
-					<p
-						className={styles.formToggle}
-						onClick={() => formTypeHandler('login')}
-					>
-						Войдите, если уже есть аккаунт
-					</p>
-				</form>
+					{isLoading && <Preloader />}
+				</div>
 			)}
 		</>
 	)
