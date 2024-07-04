@@ -12,8 +12,6 @@ import './firebase'
 import { BaseLayout } from './layouts/BaseLayout'
 import './styles/index.scss'
 
-const isAuthenticated = false
-
 const router = createBrowserRouter([
 	{
 		path: '/',

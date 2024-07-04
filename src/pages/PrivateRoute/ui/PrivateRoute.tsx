@@ -22,7 +22,8 @@ export const PrivateRoute = memo(({ children }: PrivateRouteProps) => {
 					setUser({
 						email: userInfo.email,
 						id: userInfo.userId,
-						token: userInfo.accessToken
+						token: userInfo.accessToken,
+						nickName: userInfo.nickName
 					})
 				)
 			}
@@ -33,7 +34,7 @@ export const PrivateRoute = memo(({ children }: PrivateRouteProps) => {
 	}, [dispatch])
 
 	if (isLoading) {
-		return <div>Loading...</div>
+		return null
 	}
 
 	return isAuth ? children : <Navigate to='/auth' />

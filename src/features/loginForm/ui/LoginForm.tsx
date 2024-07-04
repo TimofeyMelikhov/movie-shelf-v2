@@ -15,29 +15,31 @@ import { FormType, IForm } from '../model/model'
 import styles from './styles.module.scss'
 
 export const LoginForm = memo(() => {
-	const dispatch = useAppDispatch()
-	const { isLoading, error } = useAppSelector(state => state.userReducer)
-	const navigate = useNavigate()
-
-	const onSubmit: SubmitHandler<IForm> = async ({ email, password }) => {
-		try {
-			dispatch(setLoading(true))
-			if (formType === 'register') {
-				await dispatch(registerUser({ email, password }))
-			} else {
-				await dispatch(loginUser({ email, password }))
-				navigate('/')
-			}
-		} catch (error) {
-		} finally {
-			dispatch(setLoading(false))
-		}
-	}
-
 	const [formType, setFormType] = useState<FormType>('login')
+	const dispatch = useAppDispatch()
+	const { isLoading, errorLogin, errorRegistr } = useAppSelector(
+		state => state.userReducer
+	)
+	const navigate = useNavigate()
 
 	const formTypeHandler = (newType: FormType) => {
 		setFormType(newType)
+	}
+
+	const onSubmit: SubmitHandler<IForm> = async ({
+		email,
+		password,
+		nickName
+	}) => {
+		dispatch(setLoading(true))
+		if (formType === 'register') {
+			await dispatch(registerUser({ email, password, nickName }))
+		} else {
+			await dispatch(loginUser({ email, password }))
+			navigate('/')
+		}
+
+		dispatch(setLoading(false))
 	}
 
 	return (
@@ -46,10 +48,10 @@ export const LoginForm = memo(() => {
 				<div className={styles.formWrapper}>
 					<h1>Авторизация</h1>
 					<UserForm onSubmit={onSubmit} formType={formType} />
-					{error && (
+					{errorLogin && (
 						<ErrorMessage
 							message={
-								error === 'auth/invalid-credential'
+								errorLogin === 'auth/invalid-credential'
 									? 'Неверный логин или пароль'
 									: undefined
 							}
@@ -70,6 +72,9 @@ export const LoginForm = memo(() => {
 				<div className={styles.formWrapper}>
 					<h1>Регистрация</h1>
 					<UserForm onSubmit={onSubmit} formType={formType} />
+					{errorRegistr && (
+						<ErrorMessage message={'Произошла ошибка при регистрации'} />
+					)}
 					<div className={styles.formWrapper__togle}>
 						Уже есть аккаунт?{' '}
 						<span

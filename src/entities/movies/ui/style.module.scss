@@ -1,0 +1,8 @@
+.cardWrapper {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 10px 0px;
+	min-height: calc(100vh - 74px);
+}

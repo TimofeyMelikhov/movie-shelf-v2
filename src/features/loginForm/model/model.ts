@@ -7,18 +7,21 @@ export interface ExtendedUser extends User {
 export interface IForm {
 	email: string
 	password: string
+	nickName?: string
 }
 
 export interface IInitialState {
 	user: IUser
 	isLoading: boolean
-	error: null | string
+	errorLogin: null | string
+	errorRegistr: null | string
 }
 
 export interface IUser {
 	email: null | string
 	token: null | string
 	id: null | string
+	nickName: string | null
 }
 
 export type FormType = 'login' | 'register'

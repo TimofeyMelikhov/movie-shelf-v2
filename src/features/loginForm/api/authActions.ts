@@ -2,30 +2,33 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
 	createUserWithEmailAndPassword,
 	getAuth,
-	signInWithEmailAndPassword
+	signInWithEmailAndPassword,
+	updateProfile
 } from 'firebase/auth'
 
 import { ExtendedUser, IForm } from '../model/model'
 
 export const registerUser = createAsyncThunk(
 	'auth/registerUser',
-	async ({ email, password }: IForm) => {
-		const auth = getAuth()
-		const { user } = await createUserWithEmailAndPassword(auth, email, password)
-		const profileUserInfo = auth.currentUser
-		console.log(profileUserInfo)
-		const extendedUser = user as ExtendedUser
-		const userInfo = {
-			accessToken: extendedUser.accessToken,
-			refreshToken: extendedUser.refreshToken,
-			userId: extendedUser.uid,
-			email: extendedUser.email
-		}
-		localStorage.setItem('userInfo', JSON.stringify(userInfo))
-		return {
-			email: extendedUser.email,
-			id: extendedUser.uid,
-			token: extendedUser.accessToken
+	async ({ email, password, nickName }: IForm, { rejectWithValue }) => {
+		try {
+			const auth = getAuth()
+			const { user } = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password
+			)
+			await updateProfile(user, { displayName: nickName })
+			const extendedUser = user as ExtendedUser
+			alert('Регистрация прошла успешно!')
+			return {
+				email: extendedUser.email,
+				id: extendedUser.uid,
+				token: extendedUser.accessToken,
+				nickName: extendedUser.displayName
+			}
+		} catch (error: any) {
+			return rejectWithValue(error.code)
 		}
 	}
 )
@@ -41,13 +44,15 @@ export const loginUser = createAsyncThunk(
 				accessToken: extendedUser.accessToken,
 				refreshToken: extendedUser.refreshToken,
 				userId: extendedUser.uid,
-				email: extendedUser.email
+				email: extendedUser.email,
+				nickName: extendedUser.displayName
 			}
 			localStorage.setItem('userInfo', JSON.stringify(userInfo))
 			return {
 				email: extendedUser.email,
 				id: extendedUser.uid,
-				token: extendedUser.accessToken
+				token: extendedUser.accessToken,
+				nickName: extendedUser.displayName
 			}
 		} catch (error: any) {
 			return rejectWithValue(error.code)

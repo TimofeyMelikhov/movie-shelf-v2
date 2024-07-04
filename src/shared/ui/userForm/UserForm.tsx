@@ -1,7 +1,11 @@
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { CiLogin } from 'react-icons/ci'
-import { RiLockPasswordLine } from 'react-icons/ri'
+import { GoEye, GoEyeClosed } from 'react-icons/go'
+import {
+	MdAlternateEmail,
+	MdDriveFileRenameOutline,
+	MdOutlinePassword
+} from 'react-icons/md'
 
 import { ErrorMessage } from '../errorMessage/ErrorMessage'
 
@@ -10,11 +14,13 @@ import styles from './styles.module.scss'
 
 export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 	const { register, handleSubmit, formState } = useForm<IForm>({
-		mode: 'onChange'
+		mode: 'onSubmit'
 	})
+	const [passwordVisible, setPasswordVisible] = useState(false)
 
 	const loginError = formState.errors.email?.message
 	const passwordError = formState.errors.password?.message
+	const nameError = formState.errors.nickName?.message
 
 	let btnText = formType === 'login' ? 'Войти' : 'Зарегистрироваться'
 
@@ -22,11 +28,11 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 		<form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
 			<div className={styles.inputWrapper}>
 				<div className={styles.iconWrapper}>
-					<CiLogin />
+					<MdAlternateEmail />
 				</div>
 				<input
 					type='email'
-					placeholder='логин'
+					placeholder='email'
 					{...register('email', {
 						required: 'Введите логин'
 					})}
@@ -36,17 +42,42 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 
 			<div className={styles.inputWrapper}>
 				<div className={styles.iconWrapper}>
-					<RiLockPasswordLine />
+					<MdOutlinePassword />
 				</div>
 				<input
-					type='password'
+					type={passwordVisible ? 'text' : 'password'}
 					placeholder='пароль'
 					{...register('password', {
-						required: 'Введите пароль'
+						required: 'Введите пароль',
+						minLength: {
+							value: 6,
+							message: 'Пароль должен содержать не менее 6 символов!'
+						}
 					})}
 				/>
+				<div
+					className={styles.iconWrapper_eye}
+					onClick={() => setPasswordVisible(prev => !prev)}
+				>
+					{passwordVisible ? <GoEyeClosed /> : <GoEye />}
+				</div>
 			</div>
 			{passwordError && <ErrorMessage message={passwordError} />}
+			{formType === 'register' && (
+				<div className={styles.inputWrapper}>
+					<div className={styles.iconWrapper}>
+						<MdDriveFileRenameOutline />
+					</div>
+					<input
+						type='string'
+						placeholder='отображаемое имя'
+						{...register('nickName', {
+							required: 'Введите имя'
+						})}
+					/>
+				</div>
+			)}
+			{nameError && <ErrorMessage message={nameError} />}
 			<button>{btnText}</button>
 		</form>
 	)

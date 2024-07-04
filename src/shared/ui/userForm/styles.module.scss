@@ -7,6 +7,7 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
+		width: 100%;
 		margin-top: 25px;
 	}
 	.iconWrapper {
@@ -14,6 +15,13 @@
 		top: 50%;
 		left: 8px;
 		transform: translateY(-50%);
+	}
+	.iconWrapper_eye {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		right: 8px;
+		cursor: pointer;
 	}
 
 	input {
@@ -30,7 +38,6 @@
 		}
 	}
 	button {
-		// width: 50%;
 		margin-top: 25px;
 		padding: 10px 25px;
 		cursor: pointer;
