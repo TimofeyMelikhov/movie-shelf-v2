@@ -20,7 +20,6 @@ export const registerUser = createAsyncThunk(
 			)
 			await updateProfile(user, { displayName: nickName })
 			const extendedUser = user as ExtendedUser
-			alert('Регистрация прошла успешно!')
 			return {
 				email: extendedUser.email,
 				id: extendedUser.uid,
@@ -45,14 +44,16 @@ export const loginUser = createAsyncThunk(
 				refreshToken: extendedUser.refreshToken,
 				userId: extendedUser.uid,
 				email: extendedUser.email,
-				nickName: extendedUser.displayName
+				nickName: extendedUser.displayName,
+				photoURL: extendedUser.photoURL
 			}
 			localStorage.setItem('userInfo', JSON.stringify(userInfo))
 			return {
 				email: extendedUser.email,
 				id: extendedUser.uid,
 				token: extendedUser.accessToken,
-				nickName: extendedUser.displayName
+				nickName: extendedUser.displayName,
+				photoURL: extendedUser.photoURL
 			}
 		} catch (error: any) {
 			return rejectWithValue(error.code)

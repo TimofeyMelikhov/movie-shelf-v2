@@ -1,30 +1,31 @@
 import { memo } from 'react'
-import { Link } from 'react-router-dom'
 
-import { LogOut } from '@/features/logOut/ui/LogOut'
+import { UserProfile } from '@/entities/user/ui/UserProfile/UserProfile'
+import { LogOut } from '@/entities/user/ui/logOut/LogOut'
+
+import { Logo } from '@/features/logo/Logo'
+import { Search } from '@/features/search/Search'
 
 import { useAuth } from '@/shared/hooks/useAuth'
 
 import styles from './styles.module.scss'
 
 export const Header = memo(() => {
-	const { isAuth, nickName } = useAuth()
+	const { isAuth } = useAuth()
 
 	return (
-		<header>
+		<header className={styles.header}>
 			{isAuth ? (
-				<div className={styles.header}>
-					<div className={styles.header__wrapperLink}>
-						<Link to='/'>Кинополка</Link>
+				<>
+					<Logo />
+					<Search />
+					<div className={styles.userActions}>
+						<UserProfile />
+						<LogOut />
 					</div>
-					{/* <MovieSearch /> */}
-					<div>{nickName}</div>
-					<LogOut />
-				</div>
+				</>
 			) : (
-				<div className={styles.header}>
-					<Link to='/'>Кинополка</Link>
-				</div>
+				<Logo />
 			)}
 		</header>
 	)

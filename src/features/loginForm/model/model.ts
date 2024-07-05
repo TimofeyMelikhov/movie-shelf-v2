@@ -13,8 +13,7 @@ export interface IForm {
 export interface IInitialState {
 	user: IUser
 	isLoading: boolean
-	errorLogin: null | string
-	errorRegistr: null | string
+	infoMessage: { type: 'error' | 'success'; message: string } | null
 }
 
 export interface IUser {
@@ -22,6 +21,7 @@ export interface IUser {
 	token: null | string
 	id: null | string
 	nickName: string | null
+	photoURL: string | null
 }
 
 export type FormType = 'login' | 'register'

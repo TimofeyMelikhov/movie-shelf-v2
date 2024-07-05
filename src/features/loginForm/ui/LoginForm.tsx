@@ -1,30 +1,39 @@
-import { memo, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch'
 import { useAppSelector } from '@/shared/hooks/useAppSelector'
-import { ErrorMessage } from '@/shared/ui/errorMessage/ErrorMessage'
+import { InfoMessage } from '@/shared/ui/infoMessage/InfoMessage'
 import { Preloader } from '@/shared/ui/preloader/Preloader'
 import { UserForm } from '@/shared/ui/userForm/UserForm'
 
 import { loginUser, registerUser } from '../api/authActions'
-import { setLoading } from '../api/userSlice'
+import { clearInfoMessage, setLoading } from '../api/userSlice'
 import { FormType, IForm } from '../model/model'
+import { errorHandler } from '../utils/errorHandler'
 
 import styles from './styles.module.scss'
 
 export const LoginForm = memo(() => {
 	const [formType, setFormType] = useState<FormType>('login')
+
 	const dispatch = useAppDispatch()
-	const { isLoading, errorLogin, errorRegistr } = useAppSelector(
-		state => state.userReducer
-	)
+	const { isLoading, infoMessage } = useAppSelector(state => state.userReducer)
 	const navigate = useNavigate()
 
 	const formTypeHandler = (newType: FormType) => {
 		setFormType(newType)
 	}
+
+	useEffect(() => {
+		if (infoMessage) {
+			const timer = setTimeout(() => {
+				dispatch(clearInfoMessage())
+			}, 3000)
+			return () => clearTimeout(timer)
+		}
+	}, [infoMessage])
 
 	const onSubmit: SubmitHandler<IForm> = async ({
 		email,
@@ -32,8 +41,10 @@ export const LoginForm = memo(() => {
 		nickName
 	}) => {
 		dispatch(setLoading(true))
+
 		if (formType === 'register') {
 			await dispatch(registerUser({ email, password, nickName }))
+			formTypeHandler('login')
 		} else {
 			await dispatch(loginUser({ email, password }))
 			navigate('/')
@@ -43,20 +54,18 @@ export const LoginForm = memo(() => {
 	}
 
 	return (
-		<>
+		<div className={styles.container}>
+			{infoMessage && (
+				<InfoMessage
+					message={errorHandler(infoMessage.message)}
+					type={infoMessage.type}
+				/>
+			)}
 			{formType === 'login' ? (
 				<div className={styles.formWrapper}>
 					<h1>Авторизация</h1>
 					<UserForm onSubmit={onSubmit} formType={formType} />
-					{errorLogin && (
-						<ErrorMessage
-							message={
-								errorLogin === 'auth/invalid-credential'
-									? 'Неверный логин или пароль'
-									: undefined
-							}
-						/>
-					)}
+
 					<div className={styles.formWrapper__togle}>
 						Нет аккаунта?{' '}
 						<span
@@ -72,9 +81,6 @@ export const LoginForm = memo(() => {
 				<div className={styles.formWrapper}>
 					<h1>Регистрация</h1>
 					<UserForm onSubmit={onSubmit} formType={formType} />
-					{errorRegistr && (
-						<ErrorMessage message={'Произошла ошибка при регистрации'} />
-					)}
 					<div className={styles.formWrapper__togle}>
 						Уже есть аккаунт?{' '}
 						<span
@@ -87,6 +93,6 @@ export const LoginForm = memo(() => {
 					{isLoading && <Preloader />}
 				</div>
 			)}
-		</>
+		</div>
 	)
 })

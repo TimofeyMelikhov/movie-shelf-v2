@@ -1,0 +1,13 @@
+.logoutButton {
+	.logoutButton {
+		margin-right: 10px;
+		background-color: transparent;
+		border: none;
+		color: #fff;
+		cursor: pointer;
+
+		&:hover {
+			color: #f00;
+		}
+	}
+}

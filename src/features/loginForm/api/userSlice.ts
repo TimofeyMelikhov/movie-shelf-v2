@@ -7,8 +7,7 @@ import { loginUser, registerUser } from './authActions'
 const initialState: IInitialState = {
 	user: {} as IUser,
 	isLoading: false,
-	errorLogin: null,
-	errorRegistr: null
+	infoMessage: null
 }
 
 const userSlice = createSlice({
@@ -30,22 +29,28 @@ const userSlice = createSlice({
 			state.user.id = null
 			state.user.nickName = null
 		},
-		dropLoginError: state => {
-			state.errorLogin = null
+		clearInfoMessage: state => {
+			state.infoMessage = null
 		}
 	},
 	extraReducers(builder) {
 		builder
+			.addCase(registerUser.fulfilled, state => {
+				state.infoMessage = {
+					type: 'success',
+					message: 'Регистрация прошла успешно!'
+				}
+			})
 			.addCase(loginUser.rejected, (state, action) => {
-				state.errorLogin = action.payload as string
+				state.infoMessage = { type: 'error', message: action.payload as string }
 			})
 			.addCase(registerUser.rejected, (state, action) => {
-				state.errorRegistr = action.payload as string
+				state.infoMessage = { type: 'error', message: action.payload as string }
 			})
 	}
 })
 
-export const { setLoading, setUser, removeUser, dropLoginError } =
+export const { setLoading, setUser, removeUser, clearInfoMessage } =
 	userSlice.actions
 
 export default userSlice.reducer

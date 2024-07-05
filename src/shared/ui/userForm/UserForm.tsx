@@ -7,13 +7,11 @@ import {
 	MdOutlinePassword
 } from 'react-icons/md'
 
-import { ErrorMessage } from '../errorMessage/ErrorMessage'
-
 import { IForm, IUserFormProps } from './model'
 import styles from './styles.module.scss'
 
 export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
-	const { register, handleSubmit, formState } = useForm<IForm>({
+	const { register, handleSubmit, formState, reset } = useForm<IForm>({
 		mode: 'onSubmit'
 	})
 	const [passwordVisible, setPasswordVisible] = useState(false)
@@ -24,8 +22,16 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 
 	let btnText = formType === 'login' ? 'Войти' : 'Зарегистрироваться'
 
+	const handleFormSubmit = async (data: IForm) => {
+		await onSubmit(data)
+		reset()
+	}
+
 	return (
-		<form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
+		<form
+			className={styles.loginForm}
+			onSubmit={handleSubmit(handleFormSubmit)}
+		>
 			<div className={styles.inputWrapper}>
 				<div className={styles.iconWrapper}>
 					<MdAlternateEmail />
@@ -38,7 +44,7 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 					})}
 				/>
 			</div>
-			{loginError && <ErrorMessage message={loginError} />}
+			{loginError && <div className={styles.errorMessage}> {loginError} </div>}
 
 			<div className={styles.inputWrapper}>
 				<div className={styles.iconWrapper}>
@@ -62,7 +68,9 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 					{passwordVisible ? <GoEyeClosed /> : <GoEye />}
 				</div>
 			</div>
-			{passwordError && <ErrorMessage message={passwordError} />}
+			{passwordError && (
+				<div className={styles.errorMessage}> {passwordError} </div>
+			)}
 			{formType === 'register' && (
 				<div className={styles.inputWrapper}>
 					<div className={styles.iconWrapper}>
@@ -77,7 +85,7 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 					/>
 				</div>
 			)}
-			{nameError && <ErrorMessage message={nameError} />}
+			{nameError && <div className={styles.errorMessage}> {nameError} </div>}
 			<button>{btnText}</button>
 		</form>
 	)

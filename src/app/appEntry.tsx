@@ -6,6 +6,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage'
 import { PrivateRoute } from '@/pages/PrivateRoute/ui/PrivateRoute'
 import { AuthPage } from '@/pages/auth/ui/AuthPage'
 import { Page } from '@/pages/main/ui/Page'
+import { Profile } from '@/pages/profile/ui/Profile'
 
 import { store } from './appStore'
 import './firebase'
@@ -22,6 +23,14 @@ const router = createBrowserRouter([
 				element: (
 					<PrivateRoute>
 						<Page />
+					</PrivateRoute>
+				)
+			},
+			{
+				path: '/profile',
+				element: (
+					<PrivateRoute>
+						<Profile />
 					</PrivateRoute>
 				)
 			}

@@ -1,7 +1,7 @@
 import { useAppSelector } from './useAppSelector'
 
 export const useAuth = () => {
-	const { email, id, token, nickName } = useAppSelector(
+	const { email, id, token, nickName, photoURL } = useAppSelector(
 		state => state.userReducer.user
 	)
 
@@ -10,6 +10,7 @@ export const useAuth = () => {
 		email,
 		token,
 		id,
-		nickName
+		nickName,
+		photoURL
 	}
 }
