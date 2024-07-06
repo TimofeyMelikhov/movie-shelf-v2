@@ -7,10 +7,16 @@ import {
 	MdOutlinePassword
 } from 'react-icons/md'
 
+import { useAppSelector } from '@/shared/hooks/useAppSelector'
+
+import { Preloader } from '../preloader/Preloader'
+
 import { IForm, IUserFormProps } from './model'
 import styles from './styles.module.scss'
 
 export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
+	const isLoading = useAppSelector(state => state.userReducer.isLoading)
+
 	const { register, handleSubmit, formState, reset } = useForm<IForm>({
 		mode: 'onSubmit'
 	})
@@ -20,7 +26,7 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 	const passwordError = formState.errors.password?.message
 	const nameError = formState.errors.nickName?.message
 
-	let btnText = formType === 'login' ? 'Войти' : 'Зарегистрироваться'
+	const btnText = formType === 'login' ? 'Войти' : 'Зарегистрироваться'
 
 	const handleFormSubmit = async (data: IForm) => {
 		await onSubmit(data)
@@ -43,8 +49,10 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 						required: 'Введите логин'
 					})}
 				/>
+				{loginError && (
+					<div className={styles.errorMessage}> {loginError} </div>
+				)}
 			</div>
-			{loginError && <div className={styles.errorMessage}> {loginError} </div>}
 
 			<div className={styles.inputWrapper}>
 				<div className={styles.iconWrapper}>
@@ -67,10 +75,10 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 				>
 					{passwordVisible ? <GoEyeClosed /> : <GoEye />}
 				</div>
+				{passwordError && (
+					<div className={styles.errorMessage}> {passwordError} </div>
+				)}
 			</div>
-			{passwordError && (
-				<div className={styles.errorMessage}> {passwordError} </div>
-			)}
 			{formType === 'register' && (
 				<div className={styles.inputWrapper}>
 					<div className={styles.iconWrapper}>
@@ -83,10 +91,14 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 							required: 'Введите имя'
 						})}
 					/>
+					{nameError && (
+						<div className={styles.errorMessage}> {nameError} </div>
+					)}
 				</div>
 			)}
-			{nameError && <div className={styles.errorMessage}> {nameError} </div>}
-			<button>{btnText}</button>
+			<button disabled={isLoading}>
+				{!isLoading ? btnText : <Preloader />}
+			</button>
 		</form>
 	)
 })

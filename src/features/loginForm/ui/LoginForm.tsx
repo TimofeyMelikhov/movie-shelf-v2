@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@/shared/hooks/useAppDispatch'
 import { useAppSelector } from '@/shared/hooks/useAppSelector'
 import { InfoMessage } from '@/shared/ui/infoMessage/InfoMessage'
-import { Preloader } from '@/shared/ui/preloader/Preloader'
 import { UserForm } from '@/shared/ui/userForm/UserForm'
 
 import { loginUser, registerUser } from '../api/authActions'
@@ -19,7 +18,7 @@ export const LoginForm = memo(() => {
 	const [formType, setFormType] = useState<FormType>('login')
 
 	const dispatch = useAppDispatch()
-	const { isLoading, infoMessage } = useAppSelector(state => state.userReducer)
+	const { infoMessage } = useAppSelector(state => state.userReducer)
 	const navigate = useNavigate()
 
 	const formTypeHandler = (newType: FormType) => {
@@ -30,10 +29,10 @@ export const LoginForm = memo(() => {
 		if (infoMessage) {
 			const timer = setTimeout(() => {
 				dispatch(clearInfoMessage())
-			}, 3000)
+			}, 3500)
 			return () => clearTimeout(timer)
 		}
-	}, [infoMessage])
+	}, [infoMessage, dispatch])
 
 	const onSubmit: SubmitHandler<IForm> = async ({
 		email,
@@ -54,7 +53,7 @@ export const LoginForm = memo(() => {
 	}
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.formWrapper}>
 			{infoMessage && (
 				<InfoMessage
 					message={errorHandler(infoMessage.message)}
@@ -62,7 +61,7 @@ export const LoginForm = memo(() => {
 				/>
 			)}
 			{formType === 'login' ? (
-				<div className={styles.formWrapper}>
+				<>
 					<h1>Авторизация</h1>
 					<UserForm onSubmit={onSubmit} formType={formType} />
 
@@ -75,10 +74,9 @@ export const LoginForm = memo(() => {
 							Зарегистрируйтесь!
 						</span>
 					</div>
-					{isLoading && <Preloader />}
-				</div>
+				</>
 			) : (
-				<div className={styles.formWrapper}>
+				<>
 					<h1>Регистрация</h1>
 					<UserForm onSubmit={onSubmit} formType={formType} />
 					<div className={styles.formWrapper__togle}>
@@ -90,8 +88,7 @@ export const LoginForm = memo(() => {
 							Войти
 						</span>
 					</div>
-					{isLoading && <Preloader />}
-				</div>
+				</>
 			)}
 		</div>
 	)

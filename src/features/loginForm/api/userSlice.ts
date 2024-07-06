@@ -17,12 +17,6 @@ const userSlice = createSlice({
 		setLoading: (state, action: PayloadAction<boolean>) => {
 			state.isLoading = action.payload
 		},
-		setUser: (state, action: PayloadAction<IUser>) => {
-			state.user.email = action.payload.email
-			state.user.token = action.payload.token
-			state.user.id = action.payload.id
-			state.user.nickName = action.payload.nickName
-		},
 		removeUser: state => {
 			state.user.email = null
 			state.user.token = null
@@ -35,14 +29,21 @@ const userSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder
+			.addCase(loginUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+				state.user.email = action.payload.email
+				state.user.token = action.payload.token
+				state.user.id = action.payload.id
+				state.user.nickName = action.payload.nickName
+				state.user.photoURL = action.payload.photoURL
+			})
+			.addCase(loginUser.rejected, (state, action) => {
+				state.infoMessage = { type: 'error', message: action.payload as string }
+			})
 			.addCase(registerUser.fulfilled, state => {
 				state.infoMessage = {
 					type: 'success',
 					message: 'Регистрация прошла успешно!'
 				}
-			})
-			.addCase(loginUser.rejected, (state, action) => {
-				state.infoMessage = { type: 'error', message: action.payload as string }
 			})
 			.addCase(registerUser.rejected, (state, action) => {
 				state.infoMessage = { type: 'error', message: action.payload as string }
@@ -50,7 +51,6 @@ const userSlice = createSlice({
 	}
 })
 
-export const { setLoading, setUser, removeUser, clearInfoMessage } =
-	userSlice.actions
+export const { setLoading, removeUser, clearInfoMessage } = userSlice.actions
 
 export default userSlice.reducer

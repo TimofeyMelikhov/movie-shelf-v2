@@ -1,22 +1,31 @@
+import { memo, useEffect, useState } from 'react'
+
 import { IInfoMessage } from './models'
+import styles from './style.module.scss'
 
-// import styles from './style.module.scss'
+export const InfoMessage = memo(({ message, type }: IInfoMessage) => {
+	const [visible, setVisible] = useState(false)
 
-export const InfoMessage = ({ message, type }: IInfoMessage) => {
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setVisible(true)
+		}, 0)
+
+		const hideTimer = setTimeout(() => {
+			setVisible(false)
+		}, 3000)
+
+		return () => {
+			clearTimeout(timer)
+			clearTimeout(hideTimer)
+		}
+	}, [])
+
 	return (
 		<div
-			style={{
-				padding: '10px',
-				margin: '10px 0',
-				border: '1px solid',
-				borderColor: type === 'error' ? 'red' : 'green',
-				color: type === 'error' ? 'red' : 'green',
-				borderRadius: '5px',
-				backgroundColor: type === 'error' ? '#ffe6e6' : '#e6ffe6',
-				fontSize: '14px'
-			}}
+			className={`${styles.infoMessage} ${styles[type]} ${visible ? styles.visible : styles.hidden}`}
 		>
 			{message}
 		</div>
 	)
-}
+})

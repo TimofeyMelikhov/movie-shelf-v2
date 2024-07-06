@@ -1,4 +1,31 @@
 .infoMessage {
-	font-size: 12px;
-	color: red;
+	position: absolute;
+	top: -80px;
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+	padding: 10px;
+	margin: 10px 0;
+	border: 1px solid;
+	border-radius: 5px;
+	font-size: 14px;
+
+	&.visible {
+		opacity: 1;
+	}
+
+	&.hidden {
+		opacity: 0;
+	}
+
+	&.error {
+		color: red;
+		border-color: red;
+		background-color: #ffe6e6;
+	}
+
+	&.success {
+		color: green;
+		border-color: green;
+		background-color: #e6ffe6;
+	}
 }
