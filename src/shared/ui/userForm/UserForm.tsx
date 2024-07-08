@@ -97,7 +97,7 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 				</div>
 			)}
 			<button disabled={isLoading}>
-				{!isLoading ? btnText : <Preloader />}
+				{!isLoading ? btnText : <Preloader size='small' />}
 			</button>
 		</form>
 	)

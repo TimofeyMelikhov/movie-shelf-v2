@@ -8,6 +8,7 @@ import { AuthPage } from '@/pages/auth/ui/AuthPage'
 import { Page } from '@/pages/main/ui/Page'
 import { Profile } from '@/pages/profile/ui/Profile'
 
+import { AuthProvider } from './AuthProvider'
 import { store } from './appStore'
 import './firebase'
 import { BaseLayout } from './layouts/BaseLayout'
@@ -51,6 +52,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<Provider store={store}>
-		<RouterProvider router={router} />
+		<AuthProvider>
+			<RouterProvider router={router} />
+		</AuthProvider>
 	</Provider>
 )

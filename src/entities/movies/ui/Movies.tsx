@@ -11,7 +11,7 @@ export const Movies = () => {
 	return (
 		<div className={styles.cardWrapper}>
 			{isLoading ? (
-				<Preloader />
+				<Preloader size='large' />
 			) : (
 				movies?.docs.map(movies => (
 					<CardMovies

@@ -2,6 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
 	createUserWithEmailAndPassword,
 	getAuth,
+	sendEmailVerification,
+	sendPasswordResetEmail,
 	signInWithEmailAndPassword,
 	updateProfile
 } from 'firebase/auth'
@@ -19,6 +21,9 @@ export const registerUser = createAsyncThunk(
 				password
 			)
 			await updateProfile(user, { displayName: nickName })
+
+			await sendEmailVerification(user)
+
 			const extendedUser = user as ExtendedUser
 			return {
 				email: extendedUser.email,
@@ -55,6 +60,18 @@ export const loginUser = createAsyncThunk(
 				nickName: extendedUser.displayName,
 				photoURL: extendedUser.photoURL
 			}
+		} catch (error: any) {
+			return rejectWithValue(error.code)
+		}
+	}
+)
+
+export const resetPassword = createAsyncThunk(
+	'auth/resetPass',
+	async (email: string, { rejectWithValue }) => {
+		try {
+			const auth = getAuth()
+			await sendPasswordResetEmail(auth, email)
 		} catch (error: any) {
 			return rejectWithValue(error.code)
 		}

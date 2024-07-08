@@ -40,7 +40,7 @@
 	}
 	button {
 		margin-top: 30px;
-		padding: 10px 25px;
+		padding: 15px 25px;
 		cursor: pointer;
 		border-radius: 10px;
 		border: 2px solid transparent;
@@ -49,6 +49,10 @@
 		&:hover {
 			border-color: peru;
 			transition: border-color 0.3s;
+		}
+		&:disabled {
+			cursor: default;
+			border-color: transparent;
 		}
 	}
 	.formToggle {
