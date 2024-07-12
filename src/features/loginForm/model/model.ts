@@ -16,12 +16,18 @@ export interface IInitialState {
 	infoMessage: { type: 'error' | 'success'; message: string } | null
 }
 
+export interface IInitialFormState {
+	formType: FormType
+	isModalOpen: boolean
+}
+
 export interface IUser {
 	email: null | string
 	token: null | string
 	id: null | string
 	nickName: string | null
 	photoURL: string | null
+	emailVerified: boolean
 }
 
-export type FormType = 'login' | 'register'
+export type FormType = 'login' | 'register' | 'reset_password'

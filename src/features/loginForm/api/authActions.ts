@@ -43,6 +43,7 @@ export const loginUser = createAsyncThunk(
 		try {
 			const auth = getAuth()
 			const { user } = await signInWithEmailAndPassword(auth, email, password)
+
 			const extendedUser = user as ExtendedUser
 			const userInfo = {
 				accessToken: extendedUser.accessToken,
@@ -50,7 +51,8 @@ export const loginUser = createAsyncThunk(
 				userId: extendedUser.uid,
 				email: extendedUser.email,
 				nickName: extendedUser.displayName,
-				photoURL: extendedUser.photoURL
+				photoURL: extendedUser.photoURL,
+				emailVerified: extendedUser.emailVerified
 			}
 			localStorage.setItem('userInfo', JSON.stringify(userInfo))
 			return {
@@ -58,7 +60,8 @@ export const loginUser = createAsyncThunk(
 				id: extendedUser.uid,
 				token: extendedUser.accessToken,
 				nickName: extendedUser.displayName,
-				photoURL: extendedUser.photoURL
+				photoURL: extendedUser.photoURL,
+				emailVerified: extendedUser.emailVerified
 			}
 		} catch (error: any) {
 			return rejectWithValue(error.code)

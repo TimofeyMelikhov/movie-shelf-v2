@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 import { useAuthInitializing } from '@/app/AuthProvider'
@@ -19,13 +19,12 @@ import styles from './styles.module.scss'
 
 export const LoginForm = memo(() => {
 	const [formType, setFormType] = useState<FormType>('login')
+
 	const { setIsRegistered } = useAuthInitializing()
 	const dispatch = useAppDispatch()
 	const { infoMessage } = useAppSelector(state => state.userReducer)
 	const navigate = useNavigate()
 	const [active, setActive] = useState<boolean>(false)
-
-	const { register, handleSubmit } = useForm()
 
 	const formTypeHandler = (newType: FormType) => {
 		setFormType(newType)
@@ -63,10 +62,11 @@ export const LoginForm = memo(() => {
 		setActive(true)
 	}
 
-	const onSubmitResetPass: SubmitHandler<{ email: string }> = async (data: {
-		email: string
-	}) => {
+	const onSubmitResetPass: SubmitHandler<{ email: string }> = async data => {
+		dispatch(setLoading(true))
 		await dispatch(resetPassword(data.email))
+		dispatch(setLoading(false))
+		setActive(false)
 	}
 
 	return (
@@ -107,23 +107,16 @@ export const LoginForm = memo(() => {
 					</div>
 				</>
 			)}
-			<button className={styles.resetPass} onClick={showModal}>
-				Забыли пароль?
-			</button>
+			{formType !== 'register' && (
+				<button className={styles.resetPass} onClick={showModal}>
+					Забыли пароль?
+				</button>
+			)}
 			<Modal active={active} setActive={setActive}>
-				<form onSubmit={handleSubmit(onSubmitResetPass)}>
-					<h4>
-						Введите почту на которую будет отправлено письмо для сброса пароля
-					</h4>
-					<input
-						type='email'
-						placeholder='Введите почту'
-						{...register('email', {
-							required: 'Введите почту'
-						})}
-					/>
-					<button type='submit'>Сброс</button>
-				</form>
+				<p>
+					Введите адрес электронной почты на который был зарегистрирован аккаунт
+				</p>
+				<UserForm onSubmit={onSubmitResetPass} formType={'reset_password'} />
 			</Modal>
 		</div>
 	)

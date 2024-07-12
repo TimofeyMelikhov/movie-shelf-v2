@@ -11,7 +11,7 @@ import { useAppSelector } from '@/shared/hooks/useAppSelector'
 
 import { Preloader } from '../preloader/Preloader'
 
-import { IForm, IUserFormProps } from './model'
+import { IForm, IUserFormProps, formTypes } from './model'
 import styles from './styles.module.scss'
 
 export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
@@ -26,7 +26,12 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 	const passwordError = formState.errors.password?.message
 	const nameError = formState.errors.nickName?.message
 
-	const btnText = formType === 'login' ? 'Войти' : 'Зарегистрироваться'
+	const btnText =
+		formType === formTypes.LOGIN
+			? 'Войти'
+			: formType === formTypes.REGISTER
+				? 'Зарегистрироваться'
+				: 'Восстановить пароль'
 
 	const handleFormSubmit = async (data: IForm) => {
 		await onSubmit(data)
@@ -54,32 +59,35 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 				)}
 			</div>
 
-			<div className={styles.inputWrapper}>
-				<div className={styles.iconWrapper}>
-					<MdOutlinePassword />
+			{formType !== formTypes.RESET_PASSWORD && (
+				<div className={styles.inputWrapper}>
+					<div className={styles.iconWrapper}>
+						<MdOutlinePassword />
+					</div>
+					<input
+						type={passwordVisible ? 'text' : 'password'}
+						placeholder='пароль'
+						{...register('password', {
+							required: 'Введите пароль',
+							minLength: {
+								value: 6,
+								message: 'Пароль должен содержать не менее 6 символов!'
+							}
+						})}
+					/>
+					<div
+						className={styles.iconWrapper_eye}
+						onClick={() => setPasswordVisible(prev => !prev)}
+					>
+						{passwordVisible ? <GoEyeClosed /> : <GoEye />}
+					</div>
+					{passwordError && (
+						<div className={styles.errorMessage}> {passwordError} </div>
+					)}
 				</div>
-				<input
-					type={passwordVisible ? 'text' : 'password'}
-					placeholder='пароль'
-					{...register('password', {
-						required: 'Введите пароль',
-						minLength: {
-							value: 6,
-							message: 'Пароль должен содержать не менее 6 символов!'
-						}
-					})}
-				/>
-				<div
-					className={styles.iconWrapper_eye}
-					onClick={() => setPasswordVisible(prev => !prev)}
-				>
-					{passwordVisible ? <GoEyeClosed /> : <GoEye />}
-				</div>
-				{passwordError && (
-					<div className={styles.errorMessage}> {passwordError} </div>
-				)}
-			</div>
-			{formType === 'register' && (
+			)}
+
+			{formType === formTypes.REGISTER && (
 				<div className={styles.inputWrapper}>
 					<div className={styles.iconWrapper}>
 						<MdDriveFileRenameOutline />
@@ -96,6 +104,7 @@ export const UserForm = memo(({ onSubmit, formType }: IUserFormProps) => {
 					)}
 				</div>
 			)}
+
 			<button disabled={isLoading}>
 				{!isLoading ? btnText : <Preloader size='small' />}
 			</button>

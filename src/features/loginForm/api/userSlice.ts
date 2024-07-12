@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 import { IInitialState, IUser } from '../model/model'
 
-import { loginUser, registerUser } from './authActions'
+import { loginUser, registerUser, resetPassword } from './authActions'
 
 const initialState: IInitialState = {
 	user: {} as IUser,
@@ -43,6 +43,7 @@ const userSlice = createSlice({
 				state.user.id = action.payload.id
 				state.user.nickName = action.payload.nickName
 				state.user.photoURL = action.payload.photoURL
+				state.user.emailVerified = action.payload.emailVerified
 			})
 			.addCase(loginUser.rejected, (state, action) => {
 				state.infoMessage = { type: 'error', message: action.payload as string }
@@ -51,10 +52,20 @@ const userSlice = createSlice({
 				state.infoMessage = {
 					type: 'success',
 					message:
-						'Регистрация прошла успешно! Письмо для верификации было направлено на Вашу почту'
+						'Регистрация прошла успешно! Письмо для подтверждения аккаунта было направлено на Вашу почту'
 				}
 			})
 			.addCase(registerUser.rejected, (state, action) => {
+				state.infoMessage = { type: 'error', message: action.payload as string }
+				state.isLoading = false
+			})
+			.addCase(resetPassword.fulfilled, state => {
+				state.infoMessage = state.infoMessage = {
+					type: 'success',
+					message: 'Письмо было успешно отправлено на Вашу почту'
+				}
+			})
+			.addCase(resetPassword.rejected, (state, action) => {
 				state.infoMessage = { type: 'error', message: action.payload as string }
 				state.isLoading = false
 			})

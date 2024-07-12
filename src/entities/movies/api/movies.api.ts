@@ -17,8 +17,13 @@ export const moviesApi = createApi({
 			query: () => ({
 				url: 'v1.4/movie?page=1&limit=20&rating.kp=7.2-10&lists=top250'
 			})
+		}),
+		getMovieById: build.query<IMovies, string | undefined>({
+			query: (id: string) => ({
+				url: `/v1.4/movie/${id}`
+			})
 		})
 	})
 })
 
-export const { useGetMoviesQuery } = moviesApi
+export const { useGetMoviesQuery, useGetMovieByIdQuery } = moviesApi

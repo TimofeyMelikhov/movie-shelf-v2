@@ -5,6 +5,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { PrivateRoute } from '@/pages/PrivateRoute/ui/PrivateRoute'
 import { AuthPage } from '@/pages/auth/ui/AuthPage'
+import { Film } from '@/pages/film/ui/Film'
 import { Page } from '@/pages/main/ui/Page'
 import { Profile } from '@/pages/profile/ui/Profile'
 
@@ -32,6 +33,14 @@ const router = createBrowserRouter([
 				element: (
 					<PrivateRoute>
 						<Profile />
+					</PrivateRoute>
+				)
+			},
+			{
+				path: '/film/:id',
+				element: (
+					<PrivateRoute>
+						<Film />
 					</PrivateRoute>
 				)
 			}

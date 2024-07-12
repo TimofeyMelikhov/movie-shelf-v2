@@ -45,7 +45,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 					id: extendedUser.uid,
 					email: extendedUser.email,
 					nickName: extendedUser.displayName,
-					photoURL: extendedUser.photoURL
+					photoURL: extendedUser.photoURL,
+					emailVerified: extendedUser.emailVerified
 				}
 				localStorage.setItem('userInfo', JSON.stringify(userInfo))
 				dispatch(setUser(userInfo))
