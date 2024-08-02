@@ -30,6 +30,7 @@ export interface IMovies {
 	type: string
 	year: number
 	votes: IVotes
+	slogan: string
 }
 
 export interface IGenres {
@@ -53,4 +54,19 @@ interface IVotes {
 	filmCritics: number
 	imdb: number
 	kp: number
+}
+
+export interface IReviews {
+	id: number
+	movieId: number
+	title: string
+	type: string
+	review: string
+	date: string
+	author: string
+	userRating: number
+	reviewDislikes: number
+	reviewLikes: number
+	updatedAt: string
+	authorId: number
 }
