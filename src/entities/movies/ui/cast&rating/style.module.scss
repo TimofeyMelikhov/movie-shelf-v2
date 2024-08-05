@@ -1,0 +1,17 @@
+.rating {
+	font-size: 32px;
+	font-weight: 700;
+	color: #777;
+	&_good {
+		color: #3bb33b;
+	}
+	&_bad {
+		color: red;
+	}
+}
+
+.votes {
+	font-size: 13px;
+	line-height: 18px;
+	color: rgba(0, 0, 0, 0.6);
+}

@@ -31,6 +31,23 @@ export interface IMovies {
 	year: number
 	votes: IVotes
 	slogan: string
+	budget: IBudget
+	persons: IPerson[]
+}
+
+interface IPerson {
+	id: number
+	name: string
+	enName: string
+	enProfession: string
+	description: string
+	profession: string
+	photo: string
+}
+
+interface IBudget {
+	currency: string
+	value: number
 }
 
 export interface IGenres {
@@ -49,7 +66,7 @@ export interface IRating {
 	imdb: number
 	kp: number
 }
-interface IVotes {
+export interface IVotes {
 	await: number
 	filmCritics: number
 	imdb: number

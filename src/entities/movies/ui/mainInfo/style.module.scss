@@ -1,0 +1,31 @@
+.alterTitel {
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 18px;
+	letter-spacing: -0.2px;
+	line-height: 20px;
+}
+
+h1 {
+	font-size: 40px;
+	font-weight: 700;
+	margin-bottom: 10px;
+	letter-spacing: -0.5px;
+}
+h3 {
+	font-weight: 600;
+	font-size: 22px;
+	margin: 20px 0px;
+}
+
+.infoItem {
+	display: flex;
+	font-size: 13px;
+	margin-bottom: 10px;
+	&_title {
+		color: rgba(0, 0, 0, 0.6);
+		width: 160px;
+	}
+	&_descr {
+		color: rgba(0, 0, 0, 0.6);
+	}
+}
