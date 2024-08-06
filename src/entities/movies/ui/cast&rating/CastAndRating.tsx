@@ -2,6 +2,8 @@ import { memo } from 'react'
 
 import classNames from 'classnames'
 
+import { formatNum } from '@/shared/utils/formatter'
+
 import {
 	IRating,
 	IReviews,
@@ -28,7 +30,9 @@ export const CastAndRating = memo(
 		return (
 			<div>
 				<div className={ratingClass}>{movieRating}</div>
-				<div className={styles.votes}>{votes?.kp} оценки</div>
+				<div className={styles.votes}>
+					{formatNum(votes?.kp ? votes?.kp : 0)} оценки
+				</div>
 				<div className={styles.votes}>{review?.total} рецензия</div>
 			</div>
 		)

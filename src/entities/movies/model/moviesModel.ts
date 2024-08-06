@@ -33,9 +33,20 @@ export interface IMovies {
 	slogan: string
 	budget: IBudget
 	persons: IPerson[]
+	fees: {
+		russia: IBudget
+		usa: IBudget
+		world: IBudget
+	}
+	audience: IAudience[]
 }
 
-interface IPerson {
+interface IAudience {
+	count: number
+	country: string
+}
+
+export interface IPerson {
 	id: number
 	name: string
 	enName: string
