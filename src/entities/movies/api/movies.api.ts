@@ -15,7 +15,7 @@ export const moviesApi = createApi({
 	endpoints: build => ({
 		getMovies: build.query<IServerResponse<IMovies[]>, void>({
 			query: () => ({
-				url: 'v1.4/movie?page=1&limit=20&rating.kp=7.2-10&lists=top250'
+				url: 'v1.4/movie?page=1&limit=20&lists=top250'
 			})
 		}),
 		getMovieById: build.query<IMovies, string | undefined>({

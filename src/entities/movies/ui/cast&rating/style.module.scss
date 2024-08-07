@@ -1,4 +1,5 @@
 .rating {
+	display: flex;
 	font-size: 32px;
 	font-weight: 700;
 	color: #777;
@@ -8,10 +9,92 @@
 	&_bad {
 		color: red;
 	}
+	&_top {
+		background: linear-gradient(165deg, #ffd25e 16.44%, #b59646 63.42%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
+	.branch {
+		width: 18px;
+		height: 43px;
+		background-repeat: no-repeat;
+		background-position: 50%;
+		background-size: contain;
+
+		&_left {
+			background-image: url('@/shared/assets/leftBranch.svg');
+		}
+
+		&_right {
+			background-image: url('@/shared/assets/rightBranch.svg');
+		}
+	}
+	.namePlace {
+		font-size: 15px;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+	.place {
+		font-size: 15px;
+		font-weight: 400;
+	}
+
+	.topBlock {
+		margin-left: 13px;
+		display: flex;
+
+		.topContainer {
+			display: flex;
+			flex-direction: column;
+			margin: 0px 7px;
+		}
+	}
 }
 
 .votes {
 	font-size: 13px;
 	line-height: 18px;
 	color: rgba(0, 0, 0, 0.6);
+}
+
+.cast {
+	margin-top: 30px;
+
+	&__header {
+		display: inline-flex;
+		align-items: center;
+		font-weight: 600;
+		font-size: 15px;
+
+		&_arrow {
+			width: 16px;
+			height: 16px;
+			margin-left: 3px;
+			background-repeat: no-repeat;
+			background-position: 50%;
+			background-size: contain;
+			background-image: url('@/shared/assets/arrow.svg');
+		}
+	}
+
+	&__persons {
+		margin-top: 10px;
+		font-size: 13px;
+		li {
+			cursor: pointer;
+			list-style: none;
+			margin-bottom: 7px;
+
+			&:hover {
+				color: #f50;
+			}
+		}
+	}
+	&__length {
+		margin-top: 10px;
+		font-size: 13px;
+		color: #f50;
+		cursor: pointer;
+	}
 }

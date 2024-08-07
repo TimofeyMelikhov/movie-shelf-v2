@@ -29,7 +29,7 @@ export const Film = memo(() => {
 			) : (
 				<div className={styles.movieInfo}>
 					<div className={styles.posterTrailer}>
-						<Poster url={data?.poster.url} />
+						<Poster url={data?.poster.url} trailers={data?.videos.trailers} />
 					</div>
 
 					<div className={styles.mainInfo}>
@@ -38,9 +38,13 @@ export const Film = memo(() => {
 
 					<div className={styles.cast}>
 						<CastAndRating
-							rating={data?.rating}
+							rating={data?.rating.kp}
 							review={review}
 							votes={data?.votes}
+							top={
+								data?.top250 || data?.top10 ? data?.top250 || data?.top10 : null
+							}
+							persons={data?.persons}
 						/>
 					</div>
 				</div>

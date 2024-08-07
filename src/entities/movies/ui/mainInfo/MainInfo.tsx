@@ -1,6 +1,7 @@
 import { memo } from 'react'
 
-import { formatNum } from '@/shared/utils/formatter'
+import { convertMinutesToHours } from '../../../../shared/utils/formatter'
+import { formatDate, formatNum } from '@/shared/utils/formatter'
 
 import { IMovies, IPerson } from '../../model/moviesModel'
 
@@ -29,7 +30,7 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 		</span>
 	))
 
-	const audience = data.audience.map((item, index) => (
+	const audience = data.audience?.map((item, index) => (
 		<span key={index}>
 			{item.country}:{formatNum(item.count)}
 			{index < data.audience.length - 1 && ', '}
@@ -45,16 +46,20 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 			.filter(person => person.enProfession === profession)
 			.slice(0, limit)
 
-		return (
-			<div>
-				{filteredPersons.map((person, index) => (
-					<span key={person.id}>
-						{person.name ? person.name : person.enName}
-						{index < filteredPersons.length - 1 && ', '}
-					</span>
-				))}
-			</div>
-		)
+		if (filteredPersons.length) {
+			return (
+				<div>
+					{filteredPersons.map((person, index) => (
+						<span key={person.id} className={styles.itemLink}>
+							{person.name ? person.name : person.enName}
+							{index < filteredPersons.length - 1 && ', '}
+						</span>
+					))}
+				</div>
+			)
+		} else {
+			return <div>—</div>
+		}
 	}
 
 	const director = filterPersonsByProfession(data?.persons, 'director', 3)
@@ -91,7 +96,9 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 			</div>
 			<div className={styles.infoItem}>
 				<div className={styles.infoItem_title}>Слоган</div>
-				<div className={styles.infoItem_descr}> «{data?.slogan}» </div>
+				<div className={styles.infoItem_descr}>
+					{data?.slogan ? `«${data?.slogan}»` : '—'}
+				</div>
 			</div>
 			<div className={styles.infoItem}>
 				<div className={styles.infoItem_title}>Режиссер</div>
@@ -101,15 +108,6 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 				<div className={styles.infoItem_title}>Сценарий</div>
 				{writer}
 			</div>
-			{data.budget && (
-				<div className={styles.infoItem}>
-					<div className={styles.infoItem_title}>Бюджет</div>
-					<div>
-						{data?.budget?.currency}
-						{formatNum(data?.budget.value)}
-					</div>
-				</div>
-			)}
 			<div className={styles.infoItem}>
 				<div className={styles.infoItem_title}>Продюссер</div>
 				{producer}
@@ -130,13 +128,24 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 				<div className={styles.infoItem_title}>Монтаж</div>
 				{editor}
 			</div>
-			<div className={styles.infoItem}>
-				<div className={styles.infoItem_title}>Сборы в США</div>
-				<div>
-					{data.fees.usa.currency}
-					{formatNum(data.fees.usa.value)}
+			{data.budget && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Бюджет</div>
+					<div>
+						{data?.budget?.currency}
+						{formatNum(data?.budget.value)}
+					</div>
 				</div>
-			</div>
+			)}
+			{data.fees.usa && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Сборы в США</div>
+					<div>
+						{data.fees.usa.currency}
+						{formatNum(data.fees.usa.value)}
+					</div>
+				</div>
+			)}
 			<div className={styles.infoItem}>
 				<div className={styles.infoItem_title}>Сборы в мире</div>
 				<div>
@@ -144,9 +153,58 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 					{formatNum(data.fees.world.value)}
 				</div>
 			</div>
+			{audience && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Зрители</div>
+					<div className={styles.infoItem_descr}>{audience}</div>
+				</div>
+			)}
+			{data.fees.russia && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Сборы в России</div>
+					<div>
+						{data.fees.russia.currency}
+						{formatNum(data.fees.russia.value)}
+					</div>
+				</div>
+			)}
+			{data.premiere.russia && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Премьера в России</div>
+					<div>{formatDate(data.premiere.russia)}</div>
+				</div>
+			)}
+			{data.premiere.world && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Премьера в мире</div>
+					<div>{formatDate(data.premiere.world)}</div>
+				</div>
+			)}
+			{data.premiere.digital && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Цифровой релиз</div>
+					<div className={styles.infoItem_descr}>
+						{formatDate(data.premiere.digital)}
+					</div>
+				</div>
+			)}
+			{data.ageRating && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Возраст</div>
+					<div className={styles.ageRating}>{data?.ageRating}+</div>
+				</div>
+			)}
+			{data?.ratingMpaa && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Рейтинг MPAA</div>
+					<div className={styles.ageRating}>
+						{data?.ratingMpaa.toUpperCase()}
+					</div>
+				</div>
+			)}
 			<div className={styles.infoItem}>
-				<div className={styles.infoItem_title}>Зрители</div>
-				<div className={styles.infoItem_descr}>{audience}</div>
+				<div className={styles.infoItem_title}>Время</div>
+				<div>{convertMinutesToHours(data?.movieLength)}</div>
 			</div>
 		</>
 	)

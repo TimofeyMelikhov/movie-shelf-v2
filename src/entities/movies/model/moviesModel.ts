@@ -39,11 +39,32 @@ export interface IMovies {
 		world: IBudget
 	}
 	audience: IAudience[]
+	premiere: IPremiere
+	videos: {
+		trailers: IVideos[]
+	}
+}
+
+export interface IVideos {
+	name: string
+	site: string
+	type: string
+	url: string
 }
 
 interface IAudience {
 	count: number
 	country: string
+}
+
+interface IPremiere {
+	bluray: string | null
+	cinema: string | null
+	country: string | null
+	digital: string | null
+	dvd: string | null
+	russia: string | null
+	world: string | null
 }
 
 export interface IPerson {
