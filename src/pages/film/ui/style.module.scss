@@ -39,4 +39,8 @@
 		flex: 1;
 		padding-left: 20px;
 	}
+
+	@media (max-width: 480px) {
+		flex-direction: column;
+	}
 }

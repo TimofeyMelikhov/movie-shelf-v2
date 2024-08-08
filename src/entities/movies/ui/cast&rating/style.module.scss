@@ -98,3 +98,11 @@
 		cursor: pointer;
 	}
 }
+
+.itemLink {
+	cursor: pointer;
+	color: #000;
+	&:hover {
+		color: #f50;
+	}
+}

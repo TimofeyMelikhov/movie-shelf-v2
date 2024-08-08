@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Link } from 'react-router-dom'
 
 import { convertMinutesToHours } from '../../../../shared/utils/formatter'
 import { formatDate, formatNum } from '@/shared/utils/formatter'
@@ -50,9 +51,11 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 			return (
 				<div>
 					{filteredPersons.map((person, index) => (
-						<span key={person.id} className={styles.itemLink}>
-							{person.name ? person.name : person.enName}
-							{index < filteredPersons.length - 1 && ', '}
+						<span key={person.id}>
+							<Link to={`/name/${person.id}`} className={styles.itemLink}>
+								{person.name ? person.name : person.enName}
+								{index < filteredPersons.length - 1 && ', '}
+							</Link>
 						</span>
 					))}
 				</div>
@@ -79,7 +82,9 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 			</h1>
 			<div className={styles.alterTitel}>
 				<span className={styles.alterTitel_title}>{data?.alternativeName}</span>
-				<span className={styles.alterTitel_age}> {data?.ageRating}+</span>
+				{data?.ageRating && (
+					<span className={styles.alterTitel_age}> {data?.ageRating}+</span>
+				)}
 			</div>
 			<h3>О фильме</h3>
 			<div className={styles.infoItem}>
@@ -137,7 +142,7 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 					</div>
 				</div>
 			)}
-			{data.fees.usa && (
+			{data.fees && data.fees.usa && (
 				<div className={styles.infoItem}>
 					<div className={styles.infoItem_title}>Сборы в США</div>
 					<div>
@@ -146,20 +151,22 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 					</div>
 				</div>
 			)}
-			<div className={styles.infoItem}>
-				<div className={styles.infoItem_title}>Сборы в мире</div>
-				<div>
-					{data.fees.world.currency}
-					{formatNum(data.fees.world.value)}
+			{data.fees && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Сборы в мире</div>
+					<div>
+						{data.fees.world.currency}
+						{formatNum(data.fees.world.value)}
+					</div>
 				</div>
-			</div>
+			)}
 			{audience && (
 				<div className={styles.infoItem}>
 					<div className={styles.infoItem_title}>Зрители</div>
 					<div className={styles.infoItem_descr}>{audience}</div>
 				</div>
 			)}
-			{data.fees.russia && (
+			{data.fees && data.fees.russia && (
 				<div className={styles.infoItem}>
 					<div className={styles.infoItem_title}>Сборы в России</div>
 					<div>
@@ -180,11 +187,21 @@ export const MainInfo = memo(({ data }: MainInfoProps) => {
 					<div>{formatDate(data.premiere.world)}</div>
 				</div>
 			)}
-			{data.premiere.digital && (
+			{data.premiere.dvd && data.distributors && (
+				<div className={styles.infoItem}>
+					<div className={styles.infoItem_title}>Релиз на DVD</div>
+					<div className={styles.infoItem_descr}>
+						{formatDate(data.premiere.dvd)}, «
+						{data.distributors.distributorRelease}»
+					</div>
+				</div>
+			)}
+			{data.premiere.digital && data.distributors && (
 				<div className={styles.infoItem}>
 					<div className={styles.infoItem_title}>Цифровой релиз</div>
 					<div className={styles.infoItem_descr}>
-						{formatDate(data.premiere.digital)}
+						{formatDate(data.premiere.digital)}, «
+						{data.distributors.distributorRelease}»
 					</div>
 				</div>
 			)}

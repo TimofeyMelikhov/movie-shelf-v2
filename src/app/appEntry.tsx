@@ -7,6 +7,7 @@ import { PrivateRoute } from '@/pages/PrivateRoute/ui/PrivateRoute'
 import { AuthPage } from '@/pages/auth/ui/AuthPage'
 import { Film } from '@/pages/film/ui/Film'
 import { Page } from '@/pages/main/ui/Page'
+import { Person } from '@/pages/person/ui/Person'
 import { Profile } from '@/pages/profile/ui/Profile'
 
 import { AuthProvider } from './AuthProvider'
@@ -41,6 +42,14 @@ const router = createBrowserRouter([
 				element: (
 					<PrivateRoute>
 						<Film />
+					</PrivateRoute>
+				)
+			},
+			{
+				path: '/name/:id',
+				element: (
+					<PrivateRoute>
+						<Person />
 					</PrivateRoute>
 				)
 			}

@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { Link } from 'react-router-dom'
 
 import classNames from 'classnames'
 
@@ -71,7 +72,11 @@ export const CastAndRating = memo(
 					<ul className={styles.cast__persons}>
 						{actors
 							?.map(actor => (
-								<li key={actor.id}>{actor.name ? actor.name : actor.enName}</li>
+								<li key={actor.id}>
+									<Link to={`/name/${actor.id}`} className={styles.itemLink}>
+										{actor.name ? actor.name : actor.enName}
+									</Link>
+								</li>
 							))
 							.slice(0, 10)}
 					</ul>
@@ -86,11 +91,19 @@ export const CastAndRating = memo(
 								{voiceActor
 									?.map(actor => (
 										<li key={actor.id}>
-											{actor.name ? actor.name : actor.enName}
+											<Link
+												to={`/name/${actor.id}`}
+												className={styles.itemLink}
+											>
+												{actor.name ? actor.name : actor.enName}
+											</Link>
 										</li>
 									))
 									.slice(0, 5)}
 							</ul>
+							<div className={styles.cast__length}>
+								{voiceActor?.length} актера
+							</div>
 						</>
 					)}
 				</div>

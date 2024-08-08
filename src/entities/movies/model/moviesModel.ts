@@ -43,6 +43,10 @@ export interface IMovies {
 	videos: {
 		trailers: IVideos[]
 	}
+	distributors: {
+		distributor: string | null
+		distributorRelease: string | null
+	}
 }
 
 export interface IVideos {

@@ -29,7 +29,7 @@ export const Film = memo(() => {
 			) : (
 				<div className={styles.movieInfo}>
 					<div className={styles.posterTrailer}>
-						<Poster url={data?.poster.url} trailers={data?.videos.trailers} />
+						<Poster url={data?.poster.url} />
 					</div>
 
 					<div className={styles.mainInfo}>
