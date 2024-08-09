@@ -66,46 +66,51 @@ export const CastAndRating = memo(
 				<div className={styles.votes}>{review?.total} рецензия</div>
 
 				<div className={styles.cast}>
-					<div className={styles.cast__header}>
-						В главных ролях <span className={styles.cast__header_arrow}></span>
+					<div className={styles.cast__mainActors}>
+						<div className={styles.cast__header}>
+							В главных ролях{' '}
+							<span className={styles.cast__header_arrow}></span>
+						</div>
+						<ul className={styles.cast__persons}>
+							{actors
+								?.map(actor => (
+									<li key={actor.id}>
+										<Link to={`/name/${actor.id}`} className={styles.itemLink}>
+											{actor.name ? actor.name : actor.enName}
+										</Link>
+									</li>
+								))
+								.slice(0, 10)}
+						</ul>
+						<div className={styles.cast__length}>{actors?.length} актера</div>
 					</div>
-					<ul className={styles.cast__persons}>
-						{actors
-							?.map(actor => (
-								<li key={actor.id}>
-									<Link to={`/name/${actor.id}`} className={styles.itemLink}>
-										{actor.name ? actor.name : actor.enName}
-									</Link>
-								</li>
-							))
-							.slice(0, 10)}
-					</ul>
-					<div className={styles.cast__length}>{actors?.length} актера</div>
-					{!!voiceActor?.length && (
-						<>
-							<div className={styles.cast__header}>
-								Роли дублировали{' '}
-								<span className={styles.cast__header_arrow}></span>
-							</div>
-							<ul className={styles.cast__persons}>
-								{voiceActor
-									?.map(actor => (
-										<li key={actor.id}>
-											<Link
-												to={`/name/${actor.id}`}
-												className={styles.itemLink}
-											>
-												{actor.name ? actor.name : actor.enName}
-											</Link>
-										</li>
-									))
-									.slice(0, 5)}
-							</ul>
-							<div className={styles.cast__length}>
-								{voiceActor?.length} актера
-							</div>
-						</>
-					)}
+					<div className={styles.cast__voiceActor}>
+						{!!voiceActor?.length && (
+							<>
+								<div className={styles.cast__header}>
+									Роли дублировали{' '}
+									<span className={styles.cast__header_arrow}></span>
+								</div>
+								<ul className={styles.cast__persons}>
+									{voiceActor
+										?.map(actor => (
+											<li key={actor.id}>
+												<Link
+													to={`/name/${actor.id}`}
+													className={styles.itemLink}
+												>
+													{actor.name ? actor.name : actor.enName}
+												</Link>
+											</li>
+										))
+										.slice(0, 5)}
+								</ul>
+								<div className={styles.cast__length}>
+									{voiceActor?.length} актера
+								</div>
+							</>
+						)}
+					</div>
 				</div>
 			</>
 		)

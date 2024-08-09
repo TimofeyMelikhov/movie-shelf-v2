@@ -12,6 +12,11 @@ export interface IPerson {
 	deathPlace: IBirthAndPlace[]
 	spouses: ISpouses[]
 	countAwards: number | null
+	profession: IProfession[]
+}
+
+interface IProfession {
+	value: string
 }
 
 interface IBirthAndPlace {

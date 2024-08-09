@@ -12,6 +12,13 @@ export const Person = memo(() => {
 
 	const { data, isFetching, isLoading } = useGetPersonQuery(id)
 
+	const profession = data?.profession.map((item, index) => (
+		<span key={index}>
+			{item.value}
+			{index < data.profession.length - 1 && ', '}
+		</span>
+	))
+
 	console.log(data)
 
 	return (
@@ -21,7 +28,23 @@ export const Person = memo(() => {
 					<Preloader size='large' />
 				</div>
 			) : (
-				<>{data?.name}</>
+				<div className={styles.personInfo}>
+					<div className={styles.personInfo__photo}>
+						<img src={data?.photo} alt='photo of actor' />
+					</div>
+
+					<div className={styles.personInfo__mainInfo}>
+						<h1>{data?.name}</h1>
+						<div className={styles.enName}>{data?.enName}</div>
+						<h3>О персоне</h3>
+						<div className={styles.infoItem}>
+							<div className={styles.infoItem_title}>Карьера</div>
+							<div>{profession}</div>
+						</div>
+					</div>
+
+					<div className={styles.personInfo__bestMovies}></div>
+				</div>
 			)}
 		</div>
 	)
