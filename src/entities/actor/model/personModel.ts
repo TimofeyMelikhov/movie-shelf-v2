@@ -13,6 +13,17 @@ export interface IPerson {
 	spouses: ISpouses[]
 	countAwards: number | null
 	profession: IProfession[]
+	movies: IMoviesPerson[]
+}
+
+interface IMoviesPerson {
+	alternativeName: string
+	description: string
+	enProfession: string
+	general: boolean
+	id: number
+	name: string
+	rating: number | null
 }
 
 interface IProfession {
@@ -29,4 +40,5 @@ interface ISpouses {
 	divorced: boolean
 	children: number
 	relation: string
+	divorcedReason: string
 }

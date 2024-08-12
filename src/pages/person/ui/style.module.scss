@@ -65,3 +65,56 @@
 		}
 	}
 }
+
+.cast {
+	margin-top: 30px;
+
+	&__header {
+		display: inline-flex;
+		align-items: center;
+		font-weight: 600;
+		font-size: 15px;
+
+		&_arrow {
+			width: 16px;
+			height: 16px;
+			margin-left: 3px;
+			background-repeat: no-repeat;
+			background-position: 50%;
+			background-size: contain;
+			background-image: url('@/shared/assets/arrow.svg');
+		}
+	}
+
+	&__persons {
+		margin-top: 10px;
+		font-size: 13px;
+		li {
+			cursor: pointer;
+			list-style: none;
+			margin-bottom: 7px;
+
+			&:hover {
+				color: #f50;
+			}
+		}
+	}
+	&__length {
+		margin-top: 10px;
+		font-size: 13px;
+		color: #f50;
+		cursor: pointer;
+	}
+
+	&__voiceActor {
+		margin-top: 24px;
+	}
+}
+
+.itemLink {
+	cursor: pointer;
+	color: #000;
+	&:hover {
+		color: #f50;
+	}
+}
