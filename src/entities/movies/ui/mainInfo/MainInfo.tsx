@@ -1,10 +1,9 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 
+import { IMovies, IPerson } from '../../../../shared/model/moviesModel'
 import { convertMinutesToHours } from '../../../../shared/utils/formatter'
 import { formatDate, formatNum } from '@/shared/utils/formatter'
-
-import { IMovies, IPerson } from '../../model/moviesModel'
 
 import styles from './style.module.scss'
 

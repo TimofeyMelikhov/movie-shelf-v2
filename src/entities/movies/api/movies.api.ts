@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-import { IMovies, IReviews, IServerResponse } from '../model/moviesModel'
+import {
+	IMovies,
+	IReviews,
+	IServerResponse
+} from '../../../shared/model/moviesModel'
 
 export const moviesApi = createApi({
 	reducerPath: 'moviesApi',

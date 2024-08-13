@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom'
 
 import classNames from 'classnames'
 
-import { formatNum } from '@/shared/utils/formatter'
-
 import {
 	IPerson,
 	IReviews,
 	IServerResponse,
 	IVotes
-} from '../../model/moviesModel'
+} from '../../../../shared/model/moviesModel'
+import { formatNum } from '@/shared/utils/formatter'
 
 import styles from './style.module.scss'
 

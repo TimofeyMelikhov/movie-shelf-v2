@@ -1,4 +1,9 @@
-import { ICountries, IGenres, IPoster, IRating } from './moviesModel'
+import {
+	ICountries,
+	IGenres,
+	IPoster,
+	IRating
+} from '../../../shared/model/moviesModel'
 
 export interface ICardMovies {
 	id: number
