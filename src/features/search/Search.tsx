@@ -1,6 +1,8 @@
 import { memo, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import classNames from 'classnames'
+
 import { useDebounce } from '@/shared/hooks/useDebounce'
 import { useInput } from '@/shared/hooks/useInput'
 
@@ -12,7 +14,7 @@ export const Search = memo(() => {
 	const [dropdown, setDropdown] = useState<boolean>(false)
 
 	const input = useInput('')
-	const debounced = useDebounce<string>(input.value, 550)
+	const debounced = useDebounce<string>(input.value, 600)
 
 	const { data } = useGetSearchResultQuery(debounced, {
 		skip: debounced.length < 3
@@ -27,6 +29,11 @@ export const Search = memo(() => {
 	useEffect(() => {
 		setDropdown(debounced.length >= 3)
 	}, [debounced])
+
+	// const ratingClass = classNames(styles.rating, {
+	// 	[styles.rating_good]: datarating >= 7,
+	// 	[styles.rating_bad]: rating < 5.1
+	// })
 
 	return (
 		<div className={styles.serarch_container}>
@@ -46,12 +53,16 @@ export const Search = memo(() => {
 							onClick={() => clickHandler(item.id)}
 							className={styles.searchResult}
 						>
-							<img src={item.poster.previewUrl} alt='' />
-							<h4>{item.name}</h4>
-							<div className={styles.descr}>
-								<span>{item.rating.kp.toFixed(1)}</span>
-								{item.alternativeName}, {item.isSeries ? 'сериал' : null},{' '}
-								{item.year}
+							<div>
+								<img src={item.poster.previewUrl} alt='' />
+							</div>
+							<div>
+								<h4>{item.name}</h4>
+								<div className={styles.descr}>
+									<span>{item.rating.kp.toFixed(1)}</span>
+									{item.alternativeName}, {item.isSeries ? 'сериал' : null},{' '}
+									{item.year}
+								</div>
 							</div>
 						</div>
 					))}
