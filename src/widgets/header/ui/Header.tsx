@@ -4,7 +4,7 @@ import { UserProfile } from '@/entities/user/ui/UserProfile/UserProfile'
 import { LogOut } from '@/entities/user/ui/logOut/LogOut'
 
 import { Logo } from '@/features/logo/Logo'
-import { Search } from '@/features/search/Search'
+import { Search } from '@/features/search/ui/main/Search'
 
 import { useAuth } from '@/shared/hooks/useAuth'
 

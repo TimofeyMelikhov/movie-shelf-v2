@@ -6,7 +6,9 @@ import classNames from 'classnames'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 import { useInput } from '@/shared/hooks/useInput'
 
-import { useGetSearchResultQuery } from './api/search.api'
+import { useGetSearchResultQuery } from '../../api/search.api'
+import { SearchResult } from '../searchResult/SearchResult'
+
 import styles from './style.module.scss'
 
 export const Search = memo(() => {
@@ -30,11 +32,6 @@ export const Search = memo(() => {
 		setDropdown(debounced.length >= 3)
 	}, [debounced])
 
-	// const ratingClass = classNames(styles.rating, {
-	// 	[styles.rating_good]: datarating >= 7,
-	// 	[styles.rating_bad]: rating < 5.1
-	// })
-
 	return (
 		<div className={styles.serarch_container}>
 			<input
@@ -48,23 +45,11 @@ export const Search = memo(() => {
 			{dropdown && (
 				<div className={styles.dropdown}>
 					{data?.docs.map(item => (
-						<div
+						<SearchResult
 							key={item.id}
-							onClick={() => clickHandler(item.id)}
-							className={styles.searchResult}
-						>
-							<div>
-								<img src={item.poster.previewUrl} alt='' />
-							</div>
-							<div>
-								<h4>{item.name}</h4>
-								<div className={styles.descr}>
-									<span>{item.rating.kp.toFixed(1)}</span>
-									{item.alternativeName}, {item.isSeries ? 'сериал' : null},{' '}
-									{item.year}
-								</div>
-							</div>
-						</div>
+							clickHandler={clickHandler}
+							searchItem={item}
+						/>
 					))}
 				</div>
 			)}

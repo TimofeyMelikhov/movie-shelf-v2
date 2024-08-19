@@ -47,6 +47,12 @@ export interface IMovies {
 		distributor: string | null
 		distributorRelease: string | null
 	}
+	releaseYears: IReleasesYears[]
+}
+
+interface IReleasesYears {
+	start: number
+	end: number
 }
 
 export interface IVideos {

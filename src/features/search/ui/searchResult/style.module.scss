@@ -1,0 +1,37 @@
+.searchResult {
+	display: flex;
+	align-items: center;
+	padding: 10px 16px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.03);
+	}
+	& > div:nth-child(2) {
+		margin-left: 14px;
+	}
+	img {
+		width: 32px;
+		height: 48px;
+	}
+	h4 {
+		color: #000;
+		font-size: 15px;
+		font-weight: 500;
+	}
+	.descr {
+		.rating {
+			color: #777;
+			&_good {
+				color: #3bb33b;
+			}
+			&_bad {
+				color: red;
+			}
+		}
+		margin-top: 2px;
+		color: #000;
+		font-size: 13px;
+		color: rgba(0, 0, 0, 0.6);
+	}
+}
