@@ -17,3 +17,15 @@
 		box-shadow: 0 10px 20px -2px rgba(0, 0, 0, 0.4);
 	}
 }
+
+.preloaderWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.withoutResult {
+	padding: 5px;
+	color: red;
+}

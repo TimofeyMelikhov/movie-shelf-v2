@@ -20,7 +20,6 @@ export const SearchResult = ({
 
 	return (
 		<div
-			key={searchItem.id}
 			onClick={() => clickHandler(searchItem.id)}
 			className={styles.searchResult}
 		>

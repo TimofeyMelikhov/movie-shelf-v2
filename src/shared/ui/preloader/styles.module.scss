@@ -1,16 +1,25 @@
 $primary-color: #303e47;
 $spinner-size-small: 20px;
-$spinner-size-large: 60px;
+$spinner-size-middle: 40px;
+$spinner-size-large: 80px;
 
 .preloader {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 9999;
 
 	&.small {
 		.spinner {
 			width: $spinner-size-small;
 			height: $spinner-size-small;
+		}
+	}
+
+	&.middle {
+		.spinner {
+			width: $spinner-size-middle;
+			height: $spinner-size-middle;
 		}
 	}
 

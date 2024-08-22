@@ -1,10 +1,9 @@
 import { memo, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import classNames from 'classnames'
-
 import { useDebounce } from '@/shared/hooks/useDebounce'
 import { useInput } from '@/shared/hooks/useInput'
+import { Preloader } from '@/shared/ui/preloader/Preloader'
 
 import { useGetSearchResultQuery } from '../../api/search.api'
 import { SearchResult } from '../searchResult/SearchResult'
@@ -18,7 +17,7 @@ export const Search = memo(() => {
 	const input = useInput('')
 	const debounced = useDebounce<string>(input.value, 600)
 
-	const { data } = useGetSearchResultQuery(debounced, {
+	const { data, isLoading, isFetching } = useGetSearchResultQuery(debounced, {
 		skip: debounced.length < 3
 	})
 
@@ -44,13 +43,26 @@ export const Search = memo(() => {
 
 			{dropdown && (
 				<div className={styles.dropdown}>
-					{data?.docs.map(item => (
-						<SearchResult
-							key={item.id}
-							clickHandler={clickHandler}
-							searchItem={item}
-						/>
-					))}
+					{isLoading || isFetching ? (
+						<div className={styles.preloaderWrapper}>
+							<Preloader size='middle' />
+						</div>
+					) : (
+						<>
+							{data?.docs.map(item => (
+								<SearchResult
+									key={item.id}
+									clickHandler={clickHandler}
+									searchItem={item}
+								/>
+							))}
+						</>
+					)}
+					{!data?.docs.length && (
+						<div className={styles.withoutResult}>
+							По вашему результату ничего не найдено
+						</div>
+					)}
 				</div>
 			)}
 		</div>
