@@ -13,15 +13,21 @@ export const searchApi = createApi({
 		}
 	}),
 	endpoints: build => ({
-		getSearchResult: build.query<
+		getMovieSearchResult: build.query<
 			IServerResponse<IMovies[]>,
 			string | undefined
 		>({
 			query: (query: string) => ({
 				url: `/v1.4/movie/search?page=1&limit=3&query=${query}`
 			})
+		}),
+		getPersonSearchResult: build.query<any, string | undefined>({
+			query: (query: string) => ({
+				url: `/v1.4/person/search?page=1&limit=3&query=${query}`
+			})
 		})
 	})
 })
 
-export const { useGetSearchResultQuery } = searchApi
+export const { useGetMovieSearchResultQuery, useGetPersonSearchResultQuery } =
+	searchApi

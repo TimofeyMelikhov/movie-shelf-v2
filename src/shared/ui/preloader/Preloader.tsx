@@ -1,6 +1,8 @@
+import { memo } from 'react'
+
 import styles from './styles.module.scss'
 
-export const Preloader = ({ size }: { size: string }) => {
+export const Preloader = memo(({ size }: { size: string }) => {
 	const sizeClass =
 		size === 'small'
 			? styles.small
@@ -15,4 +17,4 @@ export const Preloader = ({ size }: { size: string }) => {
 			<div className={styles.spinner}></div>
 		</div>
 	)
-}
+})

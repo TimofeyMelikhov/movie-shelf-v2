@@ -5,7 +5,10 @@ import { useDebounce } from '@/shared/hooks/useDebounce'
 import { useInput } from '@/shared/hooks/useInput'
 import { Preloader } from '@/shared/ui/preloader/Preloader'
 
-import { useGetSearchResultQuery } from '../../api/search.api'
+import {
+	useGetMovieSearchResultQuery,
+	useGetPersonSearchResultQuery
+} from '../../api/search.api'
 import { SearchResult } from '../searchResult/SearchResult'
 
 import styles from './style.module.scss'
@@ -17,9 +20,17 @@ export const Search = memo(() => {
 	const input = useInput('')
 	const debounced = useDebounce<string>(input.value, 600)
 
-	const { data, isLoading, isFetching } = useGetSearchResultQuery(debounced, {
+	const { data, isLoading, isFetching } = useGetMovieSearchResultQuery(
+		debounced,
+		{
+			skip: debounced.length < 3
+		}
+	)
+	const { data: person } = useGetPersonSearchResultQuery(debounced, {
 		skip: debounced.length < 3
 	})
+
+	console.log(person)
 
 	const clickHandler = (id: number) => {
 		navigate(`/film/${id}`)
